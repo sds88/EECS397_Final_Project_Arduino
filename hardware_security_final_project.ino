@@ -1,10 +1,16 @@
+/*
+ *  EECS397 - Hardware Security
+ *  Final Project
+ *  Team: Sam Schneider, Eric King, Eric Luan, Michael Harkins, Matthew Prosser
+ *  Nov. 12, 2014
+ */
+ 
 #include <SoftwareSerial.h> 
 
+#define AUTH_CHAR '$'
 
 void setup()
 {
-  Serial.begin(9600);  // Begin the serial monitor at 9600bps
-
   Serial1.begin(115200);  // The Bluetooth Mate defaults to 115200bps
 }
 
@@ -12,22 +18,10 @@ void loop()
 {
   if(Serial1.available())  // If the bluetooth sent any characters
   {
-    char c = (char)Serial1.read();
-    if(c == '0')
+    char c = (char)Serial1.read();  // Pull out the recieved character
+    if(c == AUTH_CHAR)  // If the recieved character is the correct authorization character
     {
-      Serial.println("Congratz");
+      Serial1.println("Congratz");  // Reply back with a PUF
     }
-    else
-    {
-      Serial.println("Fail");      
-    }
-    // Send any characters the bluetooth prints to the serial monitor
-    //Serial.print((char)Serial1.read());  
   }
-  if(Serial.available())  // If stuff was typed in the serial monitor
-  {
-    // Send any characters the Serial monitor prints to the bluetooth
-    Serial1.print((char)Serial.read());
-  }
-  // and loop forever and ever!
 }
