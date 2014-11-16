@@ -8,6 +8,14 @@
 #include <SoftwareSerial.h> 
 
 #define AUTH_CHAR '$'
+#define END_CHAR '\0'
+#define SRAM_SIZE 2048
+#define SRAM_START (4 * (SRAM_SIZE / 6))
+#define SRAM_END (5 * (SRAM_SIZE / 6))
+
+uint8_t const * p = 0;
+int i = SRAM_START;
+String puf = "";
 
 void setup()
 {
@@ -21,7 +29,13 @@ void loop()
     char c = (char)Serial1.read();  // Pull out the recieved character
     if(c == AUTH_CHAR)  // If the recieved character is the correct authorization character
     {
-      Serial1.println("Congratz");  // Reply back with a PUF
+      while(i < SRAM_END)
+      {
+        puf += *p;
+        i++;
+        p++;        
+      }
+      Serial1.println(puf);
     }
   }
 }
