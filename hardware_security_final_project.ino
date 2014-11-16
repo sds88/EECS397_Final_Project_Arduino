@@ -8,7 +8,6 @@
 #include <SoftwareSerial.h> 
 
 #define AUTH_CHAR '$'
-#define END_CHAR '\0'
 #define SRAM_SIZE 2048
 #define SRAM_START (4 * (SRAM_SIZE / 6))
 #define SRAM_END (5 * (SRAM_SIZE / 6))
@@ -27,7 +26,7 @@ void loop()
   if(Serial1.available())  // If the bluetooth sent any characters
   {
     char c = (char)Serial1.read();  // Pull out the recieved character
-    if(c == AUTH_CHAR)  // If the recieved character is the correct authorization character
+    if(c == AUTH_CHAR)  // If the recieved character is the correct authorization character, create the puf and send it over serial
     {
       while(i < SRAM_END)
       {
