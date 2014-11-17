@@ -18,6 +18,12 @@ String puf = "";
 
 void setup()
 {
+  while(i < SRAM_END) // Create the puf at startup
+  {
+    puf += *p;
+    i++;
+    p++;        
+  }
   Serial1.begin(115200);  // The Bluetooth Mate defaults to 115200bps
 }
 
@@ -26,14 +32,8 @@ void loop()
   if(Serial1.available())  // If the bluetooth sent any characters
   {
     char c = (char)Serial1.read();  // Pull out the recieved character
-    if(c == AUTH_CHAR)  // If the recieved character is the correct authorization character, create the puf and send it over serial
+    if(c == AUTH_CHAR)  // If the recieved character is the correct authorization character, send the puf over serial
     {
-      while(i < SRAM_END)
-      {
-        puf += *p;
-        i++;
-        p++;        
-      }
       Serial1.println(puf);
     }
   }
